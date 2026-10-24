@@ -22,6 +22,8 @@ def calculate(expr: str):
 
     Les espaces sont ignorés. Exactement un opérateur parmi ``+ - * /`` est
     accepté, et les deux opérandes doivent être convertibles en ``float``.
+    Un opérande peut être négatif : un ``-`` en début d'expression ou juste
+    après l'opérateur est un signe, pas un opérateur (``-5+3``, ``5*-3``).
 
     Args:
         expr: Expression à évaluer, par exemple ``"3 + 4.5"``.
@@ -45,6 +47,8 @@ def calculate(expr: str):
 
     for i, ch in enumerate(s):
         if ch in OPS:
+            if ch == '-' and (i == 0 or s[i-1] in OPS):
+                continue
             if op_pos != -1:
                 raise ValueError("only one operator is allowed")
             op_pos = i

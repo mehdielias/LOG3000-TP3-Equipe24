@@ -1,3 +1,10 @@
+"""Application web Flask : calculatrice à une opération.
+
+Sert une page HTML (``templates/index.html``) dont le formulaire envoie
+l'expression saisie (ex. ``"12+5"``) en POST ; le serveur l'évalue et
+renvoie la même page avec le résultat (ou un message d'erreur) dans l'écran.
+"""
+
 from flask import Flask, request, render_template
 from operators import add, subtract, multiply, divide
 
@@ -11,6 +18,23 @@ OPS = {
 }
 
 def calculate(expr: str):
+    """Évalue une expression de la forme ``<nombre><opérateur><nombre>``.
+
+    Les espaces sont ignorés. Exactement un opérateur parmi ``+ - * /`` est
+    accepté, et les deux opérandes doivent être convertibles en ``float``.
+
+    Args:
+        expr: Expression à évaluer, par exemple ``"3 + 4.5"``.
+
+    Returns:
+        Le résultat de l'opération appliquée aux deux opérandes (``float``).
+
+    Raises:
+        ValueError: Si l'expression est vide ou n'est pas une chaîne, contient
+            plus d'un opérateur, n'a pas la forme ``a op b`` ou si un opérande
+            n'est pas un nombre.
+        ZeroDivisionError: Si une division par zéro est demandée.
+    """
     if not expr or not isinstance(expr, str):
         raise ValueError("empty expression")
 
@@ -43,6 +67,17 @@ def calculate(expr: str):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    """Route principale : affiche la calculatrice et traite le calcul.
+
+    GET : renvoie la page avec un écran vide.
+    POST : lit le champ de formulaire ``display``, appelle :func:`calculate`
+    et renvoie la page avec le résultat. Toute exception est interceptée et
+    affichée sous la forme ``"Error: <message>"`` afin de ne jamais renvoyer
+    d'erreur HTTP 500 à l'utilisateur.
+
+    Returns:
+        Le HTML rendu de ``index.html`` avec la variable ``result``.
+    """
     result = ""
     if request.method == 'POST':
         expression = request.form.get('display', '')

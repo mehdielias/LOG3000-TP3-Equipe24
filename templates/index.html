@@ -37,11 +37,16 @@
 </div>
 
 <script>
+   /**
+    * Ajoute un caractère (chiffre ou opérateur) à la fin de l'écran.
+    * @param {string} value Caractère saisi par le bouton.
+    */
    function appendToDisplay(value) {
       const display = document.getElementById('display');
       display.value += value;
    }
 
+   /** Vide l'écran (bouton C). */
    function clearDisplay() {
       document.getElementById('display').value = '';
    }

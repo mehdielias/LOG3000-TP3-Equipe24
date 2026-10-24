@@ -1,0 +1,837 @@
+.FF.FF.F.F.FFFFF...............FFFF......FF.FFFFF.FFF.....FF.F.......F.. [ 85%]
+F.....F...FF                                                             [100%]
+================================== FAILURES ===================================
+_______________________ test_valid_expressions[10-4-6] ________________________
+
+expr = '10-4', expected = 6
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("2+3", 5),
+        ("10-4", 6),
+        ("6*7", 42),
+        ("9/3", 3),
+        ("7/2", 3.5),
+        ("3-10", -7),
+        ("1.5+2.25", 3.75),
+        ("0.5*4", 2),
+    ])
+    def test_valid_expressions(expr, expected):
+        """Les expressions bien formées donnent le résultat arithmétique attendu."""
+>       assert calculate(expr) == pytest.approx(expected)
+E       assert -6.0 == 6 ± 6.0e-06
+E         
+E         comparison failed
+E         Obtained: -6.0
+E         Expected: 6 ± 6.0e-06
+
+tests\test_calculate.py:30: AssertionError
+_______________________ test_valid_expressions[6*7-42] ________________________
+
+expr = '6*7', expected = 42
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("2+3", 5),
+        ("10-4", 6),
+        ("6*7", 42),
+        ("9/3", 3),
+        ("7/2", 3.5),
+        ("3-10", -7),
+        ("1.5+2.25", 3.75),
+        ("0.5*4", 2),
+    ])
+    def test_valid_expressions(expr, expected):
+        """Les expressions bien formées donnent le résultat arithmétique attendu."""
+>       assert calculate(expr) == pytest.approx(expected)
+E       assert 279936.0 == 42 ± 4.2e-05
+E         
+E         comparison failed
+E         Obtained: 279936.0
+E         Expected: 42 ± 4.2e-05
+
+tests\test_calculate.py:30: AssertionError
+_______________________ test_valid_expressions[7/2-3.5] _______________________
+
+expr = '7/2', expected = 3.5
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("2+3", 5),
+        ("10-4", 6),
+        ("6*7", 42),
+        ("9/3", 3),
+        ("7/2", 3.5),
+        ("3-10", -7),
+        ("1.5+2.25", 3.75),
+        ("0.5*4", 2),
+    ])
+    def test_valid_expressions(expr, expected):
+        """Les expressions bien formées donnent le résultat arithmétique attendu."""
+>       assert calculate(expr) == pytest.approx(expected)
+E       assert 3.0 == 3.5 ± 3.5e-06
+E         
+E         comparison failed
+E         Obtained: 3.0
+E         Expected: 3.5 ± 3.5e-06
+
+tests\test_calculate.py:30: AssertionError
+_______________________ test_valid_expressions[3-10--7] _______________________
+
+expr = '3-10', expected = -7
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("2+3", 5),
+        ("10-4", 6),
+        ("6*7", 42),
+        ("9/3", 3),
+        ("7/2", 3.5),
+        ("3-10", -7),
+        ("1.5+2.25", 3.75),
+        ("0.5*4", 2),
+    ])
+    def test_valid_expressions(expr, expected):
+        """Les expressions bien formées donnent le résultat arithmétique attendu."""
+>       assert calculate(expr) == pytest.approx(expected)
+E       assert 7.0 == -7 ± 7.0e-06
+E         
+E         comparison failed
+E         Obtained: 7.0
+E         Expected: -7 ± 7.0e-06
+
+tests\test_calculate.py:30: AssertionError
+_______________________ test_valid_expressions[0.5*4-2] _______________________
+
+expr = '0.5*4', expected = 2
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("2+3", 5),
+        ("10-4", 6),
+        ("6*7", 42),
+        ("9/3", 3),
+        ("7/2", 3.5),
+        ("3-10", -7),
+        ("1.5+2.25", 3.75),
+        ("0.5*4", 2),
+    ])
+    def test_valid_expressions(expr, expected):
+        """Les expressions bien formées donnent le résultat arithmétique attendu."""
+>       assert calculate(expr) == pytest.approx(expected)
+E       assert 0.0625 == 2 ± 2.0e-06
+E         
+E         comparison failed
+E         Obtained: 0.0625
+E         Expected: 2 ± 2.0e-06
+
+tests\test_calculate.py:30: AssertionError
+____________________ test_spaces_are_ignored[  8 * 2  -16] ____________________
+
+expr = '  8 * 2  ', expected = 16
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("2 + 3", 5),
+        ("  8 * 2  ", 16),
+        ("1 0 + 5", 15),
+    ])
+    def test_spaces_are_ignored(expr, expected):
+        """Les espaces sont retirés avant l'analyse."""
+>       assert calculate(expr) == pytest.approx(expected)
+E       assert 64.0 == 16 ± 1.6e-05
+E         
+E         comparison failed
+E         Obtained: 64.0
+E         Expected: 16 ± 1.6e-05
+
+tests\test_calculate.py:40: AssertionError
+_______________________ test_negative_operands[-5+3--2] _______________________
+
+expr = '-5+3', expected = -2
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("-5+3", -2),
+        ("-2*4", -8),
+        ("5*-3", -15),
+        ("5--3", 8),
+        ("4/-2", -2),
+    ])
+    def test_negative_operands(expr, expected):
+        """Un opérande négatif (signe ``-`` unaire) est accepté."""
+>       assert calculate(expr) == pytest.approx(expected)
+               ^^^^^^^^^^^^^^^
+
+tests\test_calculate.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+expr = '-5+3'
+
+    def calculate(expr: str):
+        """Évalue une expression de la forme ``<nombre><opérateur><nombre>``.
+    
+        Les espaces sont ignorés. Exactement un opérateur parmi ``+ - * /`` est
+        accepté, et les deux opérandes doivent être convertibles en ``float``.
+    
+        Args:
+            expr: Expression à évaluer, par exemple ``"3 + 4.5"``.
+    
+        Returns:
+            Le résultat de l'opération appliquée aux deux opérandes (``float``).
+    
+        Raises:
+            ValueError: Si l'expression est vide ou n'est pas une chaîne, contient
+                plus d'un opérateur, n'a pas la forme ``a op b`` ou si un opérande
+                n'est pas un nombre.
+            ZeroDivisionError: Si une division par zéro est demandée.
+        """
+        if not expr or not isinstance(expr, str):
+            raise ValueError("empty expression")
+    
+        s = expr.replace(" ", "")
+    
+        op_pos = -1
+        op_char = None
+    
+        for i, ch in enumerate(s):
+            if ch in OPS:
+                if op_pos != -1:
+>                   raise ValueError("only one operator is allowed")
+E                   ValueError: only one operator is allowed
+
+app.py:49: ValueError
+_______________________ test_negative_operands[-2*4--8] _______________________
+
+expr = '-2*4', expected = -8
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("-5+3", -2),
+        ("-2*4", -8),
+        ("5*-3", -15),
+        ("5--3", 8),
+        ("4/-2", -2),
+    ])
+    def test_negative_operands(expr, expected):
+        """Un opérande négatif (signe ``-`` unaire) est accepté."""
+>       assert calculate(expr) == pytest.approx(expected)
+               ^^^^^^^^^^^^^^^
+
+tests\test_calculate.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+expr = '-2*4'
+
+    def calculate(expr: str):
+        """Évalue une expression de la forme ``<nombre><opérateur><nombre>``.
+    
+        Les espaces sont ignorés. Exactement un opérateur parmi ``+ - * /`` est
+        accepté, et les deux opérandes doivent être convertibles en ``float``.
+    
+        Args:
+            expr: Expression à évaluer, par exemple ``"3 + 4.5"``.
+    
+        Returns:
+            Le résultat de l'opération appliquée aux deux opérandes (``float``).
+    
+        Raises:
+            ValueError: Si l'expression est vide ou n'est pas une chaîne, contient
+                plus d'un opérateur, n'a pas la forme ``a op b`` ou si un opérande
+                n'est pas un nombre.
+            ZeroDivisionError: Si une division par zéro est demandée.
+        """
+        if not expr or not isinstance(expr, str):
+            raise ValueError("empty expression")
+    
+        s = expr.replace(" ", "")
+    
+        op_pos = -1
+        op_char = None
+    
+        for i, ch in enumerate(s):
+            if ch in OPS:
+                if op_pos != -1:
+>                   raise ValueError("only one operator is allowed")
+E                   ValueError: only one operator is allowed
+
+app.py:49: ValueError
+______________________ test_negative_operands[5*-3--15] _______________________
+
+expr = '5*-3', expected = -15
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("-5+3", -2),
+        ("-2*4", -8),
+        ("5*-3", -15),
+        ("5--3", 8),
+        ("4/-2", -2),
+    ])
+    def test_negative_operands(expr, expected):
+        """Un opérande négatif (signe ``-`` unaire) est accepté."""
+>       assert calculate(expr) == pytest.approx(expected)
+               ^^^^^^^^^^^^^^^
+
+tests\test_calculate.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+expr = '5*-3'
+
+    def calculate(expr: str):
+        """Évalue une expression de la forme ``<nombre><opérateur><nombre>``.
+    
+        Les espaces sont ignorés. Exactement un opérateur parmi ``+ - * /`` est
+        accepté, et les deux opérandes doivent être convertibles en ``float``.
+    
+        Args:
+            expr: Expression à évaluer, par exemple ``"3 + 4.5"``.
+    
+        Returns:
+            Le résultat de l'opération appliquée aux deux opérandes (``float``).
+    
+        Raises:
+            ValueError: Si l'expression est vide ou n'est pas une chaîne, contient
+                plus d'un opérateur, n'a pas la forme ``a op b`` ou si un opérande
+                n'est pas un nombre.
+            ZeroDivisionError: Si une division par zéro est demandée.
+        """
+        if not expr or not isinstance(expr, str):
+            raise ValueError("empty expression")
+    
+        s = expr.replace(" ", "")
+    
+        op_pos = -1
+        op_char = None
+    
+        for i, ch in enumerate(s):
+            if ch in OPS:
+                if op_pos != -1:
+>                   raise ValueError("only one operator is allowed")
+E                   ValueError: only one operator is allowed
+
+app.py:49: ValueError
+_______________________ test_negative_operands[5--3-8] ________________________
+
+expr = '5--3', expected = 8
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("-5+3", -2),
+        ("-2*4", -8),
+        ("5*-3", -15),
+        ("5--3", 8),
+        ("4/-2", -2),
+    ])
+    def test_negative_operands(expr, expected):
+        """Un opérande négatif (signe ``-`` unaire) est accepté."""
+>       assert calculate(expr) == pytest.approx(expected)
+               ^^^^^^^^^^^^^^^
+
+tests\test_calculate.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+expr = '5--3'
+
+    def calculate(expr: str):
+        """Évalue une expression de la forme ``<nombre><opérateur><nombre>``.
+    
+        Les espaces sont ignorés. Exactement un opérateur parmi ``+ - * /`` est
+        accepté, et les deux opérandes doivent être convertibles en ``float``.
+    
+        Args:
+            expr: Expression à évaluer, par exemple ``"3 + 4.5"``.
+    
+        Returns:
+            Le résultat de l'opération appliquée aux deux opérandes (``float``).
+    
+        Raises:
+            ValueError: Si l'expression est vide ou n'est pas une chaîne, contient
+                plus d'un opérateur, n'a pas la forme ``a op b`` ou si un opérande
+                n'est pas un nombre.
+            ZeroDivisionError: Si une division par zéro est demandée.
+        """
+        if not expr or not isinstance(expr, str):
+            raise ValueError("empty expression")
+    
+        s = expr.replace(" ", "")
+    
+        op_pos = -1
+        op_char = None
+    
+        for i, ch in enumerate(s):
+            if ch in OPS:
+                if op_pos != -1:
+>                   raise ValueError("only one operator is allowed")
+E                   ValueError: only one operator is allowed
+
+app.py:49: ValueError
+_______________________ test_negative_operands[4/-2--2] _______________________
+
+expr = '4/-2', expected = -2
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("-5+3", -2),
+        ("-2*4", -8),
+        ("5*-3", -15),
+        ("5--3", 8),
+        ("4/-2", -2),
+    ])
+    def test_negative_operands(expr, expected):
+        """Un opérande négatif (signe ``-`` unaire) est accepté."""
+>       assert calculate(expr) == pytest.approx(expected)
+               ^^^^^^^^^^^^^^^
+
+tests\test_calculate.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+expr = '4/-2'
+
+    def calculate(expr: str):
+        """Évalue une expression de la forme ``<nombre><opérateur><nombre>``.
+    
+        Les espaces sont ignorés. Exactement un opérateur parmi ``+ - * /`` est
+        accepté, et les deux opérandes doivent être convertibles en ``float``.
+    
+        Args:
+            expr: Expression à évaluer, par exemple ``"3 + 4.5"``.
+    
+        Returns:
+            Le résultat de l'opération appliquée aux deux opérandes (``float``).
+    
+        Raises:
+            ValueError: Si l'expression est vide ou n'est pas une chaîne, contient
+                plus d'un opérateur, n'a pas la forme ``a op b`` ou si un opérande
+                n'est pas un nombre.
+            ZeroDivisionError: Si une division par zéro est demandée.
+        """
+        if not expr or not isinstance(expr, str):
+            raise ValueError("empty expression")
+    
+        s = expr.replace(" ", "")
+    
+        op_pos = -1
+        op_char = None
+    
+        for i, ch in enumerate(s):
+            if ch in OPS:
+                if op_pos != -1:
+>                   raise ValueError("only one operator is allowed")
+E                   ValueError: only one operator is allowed
+
+app.py:49: ValueError
+____________________ test_nan_and_inf_are_rejected[nan+1] _____________________
+
+expr = 'nan+1'
+
+    @pytest.mark.parametrize("expr", ["nan+1", "inf-1", "1*infinity", "2+nan"])
+    def test_nan_and_inf_are_rejected(expr):
+        """``nan`` et ``inf`` ne sont pas des nombres valides pour la calculatrice.
+    
+        ``float()`` les accepte, donc ils passent l'analyse actuelle.
+        """
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_calculate.py:90: Failed
+____________________ test_nan_and_inf_are_rejected[inf-1] _____________________
+
+expr = 'inf-1'
+
+    @pytest.mark.parametrize("expr", ["nan+1", "inf-1", "1*infinity", "2+nan"])
+    def test_nan_and_inf_are_rejected(expr):
+        """``nan`` et ``inf`` ne sont pas des nombres valides pour la calculatrice.
+    
+        ``float()`` les accepte, donc ils passent l'analyse actuelle.
+        """
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_calculate.py:90: Failed
+__________________ test_nan_and_inf_are_rejected[1*infinity] __________________
+
+expr = '1*infinity'
+
+    @pytest.mark.parametrize("expr", ["nan+1", "inf-1", "1*infinity", "2+nan"])
+    def test_nan_and_inf_are_rejected(expr):
+        """``nan`` et ``inf`` ne sont pas des nombres valides pour la calculatrice.
+    
+        ``float()`` les accepte, donc ils passent l'analyse actuelle.
+        """
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_calculate.py:90: Failed
+____________________ test_nan_and_inf_are_rejected[2+nan] _____________________
+
+expr = '2+nan'
+
+    @pytest.mark.parametrize("expr", ["nan+1", "inf-1", "1*infinity", "2+nan"])
+    def test_nan_and_inf_are_rejected(expr):
+        """``nan`` et ``inf`` ne sont pas des nombres valides pour la calculatrice.
+    
+        ``float()`` les accepte, donc ils passent l'analyse actuelle.
+        """
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_calculate.py:90: Failed
+____________________________ test_subtract[10-3-7] ____________________________
+
+a = 10, b = 3, expected = 7
+
+    @pytest.mark.parametrize("a, b, expected", [
+        (10, 3, 7),
+        (3, 10, -7),
+        (5, 5, 0),
+        (0, 4, -4),
+    ])
+    def test_subtract(a, b, expected):
+        """La soustraction renvoie ``a - b`` (l'ordre des opérandes compte)."""
+>       assert subtract(a, b) == expected
+E       assert -7 == 7
+E        +  where -7 = subtract(10, 3)
+
+tests\test_operators.py:31: AssertionError
+___________________________ test_subtract[3-10--7] ____________________________
+
+a = 3, b = 10, expected = -7
+
+    @pytest.mark.parametrize("a, b, expected", [
+        (10, 3, 7),
+        (3, 10, -7),
+        (5, 5, 0),
+        (0, 4, -4),
+    ])
+    def test_subtract(a, b, expected):
+        """La soustraction renvoie ``a - b`` (l'ordre des opérandes compte)."""
+>       assert subtract(a, b) == expected
+E       assert 7 == -7
+E        +  where 7 = subtract(3, 10)
+
+tests\test_operators.py:31: AssertionError
+____________________________ test_subtract[0-4--4] ____________________________
+
+a = 0, b = 4, expected = -4
+
+    @pytest.mark.parametrize("a, b, expected", [
+        (10, 3, 7),
+        (3, 10, -7),
+        (5, 5, 0),
+        (0, 4, -4),
+    ])
+    def test_subtract(a, b, expected):
+        """La soustraction renvoie ``a - b`` (l'ordre des opérandes compte)."""
+>       assert subtract(a, b) == expected
+E       assert 4 == -4
+E        +  where 4 = subtract(0, 4)
+
+tests\test_operators.py:31: AssertionError
+____________________________ test_multiply[3-4-12] ____________________________
+
+a = 3, b = 4, expected = 12
+
+    @pytest.mark.parametrize("a, b, expected", [
+        (3, 4, 12),
+        (2, 0, 0),
+        (-2, 5, -10),
+        (2.5, 2, 5.0),
+    ])
+    def test_multiply(a, b, expected):
+        """La multiplication renvoie ``a * b`` (et non une exponentiation)."""
+>       assert multiply(a, b) == expected
+E       assert 81 == 12
+E        +  where 81 = multiply(3, 4)
+
+tests\test_operators.py:42: AssertionError
+____________________________ test_multiply[2-0-0] _____________________________
+
+a = 2, b = 0, expected = 0
+
+    @pytest.mark.parametrize("a, b, expected", [
+        (3, 4, 12),
+        (2, 0, 0),
+        (-2, 5, -10),
+        (2.5, 2, 5.0),
+    ])
+    def test_multiply(a, b, expected):
+        """La multiplication renvoie ``a * b`` (et non une exponentiation)."""
+>       assert multiply(a, b) == expected
+E       assert 1 == 0
+E        +  where 1 = multiply(2, 0)
+
+tests\test_operators.py:42: AssertionError
+___________________________ test_multiply[-2-5--10] ___________________________
+
+a = -2, b = 5, expected = -10
+
+    @pytest.mark.parametrize("a, b, expected", [
+        (3, 4, 12),
+        (2, 0, 0),
+        (-2, 5, -10),
+        (2.5, 2, 5.0),
+    ])
+    def test_multiply(a, b, expected):
+        """La multiplication renvoie ``a * b`` (et non une exponentiation)."""
+>       assert multiply(a, b) == expected
+E       assert -32 == -10
+E        +  where -32 = multiply(-2, 5)
+
+tests\test_operators.py:42: AssertionError
+__________________________ test_multiply[2.5-2-5.0] ___________________________
+
+a = 2.5, b = 2, expected = 5.0
+
+    @pytest.mark.parametrize("a, b, expected", [
+        (3, 4, 12),
+        (2, 0, 0),
+        (-2, 5, -10),
+        (2.5, 2, 5.0),
+    ])
+    def test_multiply(a, b, expected):
+        """La multiplication renvoie ``a * b`` (et non une exponentiation)."""
+>       assert multiply(a, b) == expected
+E       assert 6.25 == 5.0
+E        +  where 6.25 = multiply(2.5, 2)
+
+tests\test_operators.py:42: AssertionError
+____________________________ test_divide[7-2-3.5] _____________________________
+
+a = 7, b = 2, expected = 3.5
+
+    @pytest.mark.parametrize("a, b, expected", [
+        (6, 3, 2),
+        (7, 2, 3.5),
+        (-7, 2, -3.5),
+        (1, 4, 0.25),
+    ])
+    def test_divide(a, b, expected):
+        """La division est réelle (``7 / 2 == 3.5``), pas une division entière."""
+>       assert divide(a, b) == expected
+E       assert 3 == 3.5
+E        +  where 3 = divide(7, 2)
+
+tests\test_operators.py:53: AssertionError
+___________________________ test_divide[-7-2--3.5] ____________________________
+
+a = -7, b = 2, expected = -3.5
+
+    @pytest.mark.parametrize("a, b, expected", [
+        (6, 3, 2),
+        (7, 2, 3.5),
+        (-7, 2, -3.5),
+        (1, 4, 0.25),
+    ])
+    def test_divide(a, b, expected):
+        """La division est réelle (``7 / 2 == 3.5``), pas une division entière."""
+>       assert divide(a, b) == expected
+E       assert -4 == -3.5
+E        +  where -4 = divide(-7, 2)
+
+tests\test_operators.py:53: AssertionError
+____________________________ test_divide[1-4-0.25] ____________________________
+
+a = 1, b = 4, expected = 0.25
+
+    @pytest.mark.parametrize("a, b, expected", [
+        (6, 3, 2),
+        (7, 2, 3.5),
+        (-7, 2, -3.5),
+        (1, 4, 0.25),
+    ])
+    def test_divide(a, b, expected):
+        """La division est réelle (``7 / 2 == 3.5``), pas une division entière."""
+>       assert divide(a, b) == expected
+E       assert 0 == 0.25
+E        +  where 0 = divide(1, 4)
+
+tests\test_operators.py:53: AssertionError
+_____________________ test_post_valid_expression[10-4-6] ______________________
+
+post_expression = <function post_expression.<locals>._post at 0x00000274A24C6340>
+expr = '10-4', expected = 6
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("2+3", 5),
+        ("10-4", 6),
+        ("6*7", 42),
+        ("9/3", 3),
+        ("7/2", 3.5),
+    ])
+    def test_post_valid_expression(post_expression, expr, expected):
+        """POST d'une expression valide affiche le bon résultat à l'écran.
+    
+        On compare la valeur numérique (``5`` ou ``5.0`` sont équivalents) :
+        le format d'affichage n'est pas l'objet de ce test.
+        """
+        shown = post_expression(expr)
+        assert not shown.startswith("Error"), shown
+>       assert float(shown) == pytest.approx(expected)
+E       assert -6.0 == 6 ± 6.0e-06
+E         
+E         comparison failed
+E         Obtained: -6.0
+E         Expected: 6 ± 6.0e-06
+
+tests\test_routes.py:43: AssertionError
+_____________________ test_post_valid_expression[6*7-42] ______________________
+
+post_expression = <function post_expression.<locals>._post at 0x00000274A240A8E0>
+expr = '6*7', expected = 42
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("2+3", 5),
+        ("10-4", 6),
+        ("6*7", 42),
+        ("9/3", 3),
+        ("7/2", 3.5),
+    ])
+    def test_post_valid_expression(post_expression, expr, expected):
+        """POST d'une expression valide affiche le bon résultat à l'écran.
+    
+        On compare la valeur numérique (``5`` ou ``5.0`` sont équivalents) :
+        le format d'affichage n'est pas l'objet de ce test.
+        """
+        shown = post_expression(expr)
+        assert not shown.startswith("Error"), shown
+>       assert float(shown) == pytest.approx(expected)
+E       assert 279936.0 == 42 ± 4.2e-05
+E         
+E         comparison failed
+E         Obtained: 279936.0
+E         Expected: 42 ± 4.2e-05
+
+tests\test_routes.py:43: AssertionError
+_____________________ test_post_valid_expression[7/2-3.5] _____________________
+
+post_expression = <function post_expression.<locals>._post at 0x00000274A24C6F20>
+expr = '7/2', expected = 3.5
+
+    @pytest.mark.parametrize("expr, expected", [
+        ("2+3", 5),
+        ("10-4", 6),
+        ("6*7", 42),
+        ("9/3", 3),
+        ("7/2", 3.5),
+    ])
+    def test_post_valid_expression(post_expression, expr, expected):
+        """POST d'une expression valide affiche le bon résultat à l'écran.
+    
+        On compare la valeur numérique (``5`` ou ``5.0`` sont équivalents) :
+        le format d'affichage n'est pas l'objet de ce test.
+        """
+        shown = post_expression(expr)
+        assert not shown.startswith("Error"), shown
+>       assert float(shown) == pytest.approx(expected)
+E       assert 3.0 == 3.5 ± 3.5e-06
+E         
+E         comparison failed
+E         Obtained: 3.0
+E         Expected: 3.5 ± 3.5e-06
+
+tests\test_routes.py:43: AssertionError
+_________________________ test_post_negative_operand __________________________
+
+post_expression = <function post_expression.<locals>._post at 0x00000274A24C6C00>
+
+    def test_post_negative_operand(post_expression):
+        """Le calcul avec un opérande négatif fonctionne via le formulaire."""
+        shown = post_expression("-5+3")
+>       assert not shown.startswith("Error"), shown
+E       AssertionError: Error: only one operator is allowed
+E       assert not True
+E        +  where True = <built-in method startswith of str object at 0x00000274A24D91B0>('Error')
+E        +    where <built-in method startswith of str object at 0x00000274A24D91B0> = 'Error: only one operator is allowed'.startswith
+
+tests\test_routes.py:69: AssertionError
+__________________ test_digit_button_label_matches_value[2] ___________________
+
+client = <FlaskClient <Flask 'app'>>, digit = '2'
+
+    @pytest.mark.parametrize("digit", list("0123456789"))
+    def test_digit_button_label_matches_value(client, digit):
+        """Le libellé de chaque bouton chiffre est le chiffre qu'il saisit."""
+        buttons = dict(_buttons(client.get("/").get_data(as_text=True)))
+    
+>       assert buttons[digit].strip() == digit
+E       AssertionError: assert '02' == '2'
+E         
+E         - 2
+E         + 02
+
+tests\test_routes.py:89: AssertionError
+__________________ test_digit_button_label_matches_value[8] ___________________
+
+client = <FlaskClient <Flask 'app'>>, digit = '8'
+
+    @pytest.mark.parametrize("digit", list("0123456789"))
+    def test_digit_button_label_matches_value(client, digit):
+        """Le libellé de chaque bouton chiffre est le chiffre qu'il saisit."""
+        buttons = dict(_buttons(client.get("/").get_data(as_text=True)))
+    
+>       assert buttons[digit].strip() == digit
+E       AssertionError: assert '88' == '8'
+E         
+E         - 8
+E         + 88
+
+tests\test_routes.py:89: AssertionError
+_________________ test_operator_buttons_have_visible_label[*] _________________
+
+client = <FlaskClient <Flask 'app'>>, operator = '*'
+
+    @pytest.mark.parametrize("operator", list("+-*/"))
+    def test_operator_buttons_have_visible_label(client, operator):
+        """Chaque bouton d'opérateur affiche un libellé non vide."""
+        buttons = dict(_buttons(client.get("/").get_data(as_text=True)))
+    
+>       assert buttons[operator].strip() != ""
+E       AssertionError: assert '' != ''
+E        +  where '' = <built-in method strip of str object at 0x00007FFDA70BF6C0>()
+E        +    where <built-in method strip of str object at 0x00007FFDA70BF6C0> = ''.strip
+
+tests\test_routes.py:97: AssertionError
+_________________ test_operator_buttons_have_visible_label[/] _________________
+
+client = <FlaskClient <Flask 'app'>>, operator = '/'
+
+    @pytest.mark.parametrize("operator", list("+-*/"))
+    def test_operator_buttons_have_visible_label(client, operator):
+        """Chaque bouton d'opérateur affiche un libellé non vide."""
+        buttons = dict(_buttons(client.get("/").get_data(as_text=True)))
+    
+>       assert buttons[operator].strip() != ""
+E       AssertionError: assert '' != ''
+E        +  where '' = <built-in method strip of str object at 0x00007FFDA70BF6C0>()
+E        +    where <built-in method strip of str object at 0x00007FFDA70BF6C0> = ''.strip
+
+tests\test_routes.py:97: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_calculate.py::test_valid_expressions[10-4-6] - assert -6.0 ...
+FAILED tests/test_calculate.py::test_valid_expressions[6*7-42] - assert 27993...
+FAILED tests/test_calculate.py::test_valid_expressions[7/2-3.5] - assert 3.0 ...
+FAILED tests/test_calculate.py::test_valid_expressions[3-10--7] - assert 7.0 ...
+FAILED tests/test_calculate.py::test_valid_expressions[0.5*4-2] - assert 0.06...
+FAILED tests/test_calculate.py::test_spaces_are_ignored[  8 * 2  -16] - asser...
+FAILED tests/test_calculate.py::test_negative_operands[-5+3--2] - ValueError:...
+FAILED tests/test_calculate.py::test_negative_operands[-2*4--8] - ValueError:...
+FAILED tests/test_calculate.py::test_negative_operands[5*-3--15] - ValueError...
+FAILED tests/test_calculate.py::test_negative_operands[5--3-8] - ValueError: ...
+FAILED tests/test_calculate.py::test_negative_operands[4/-2--2] - ValueError:...
+FAILED tests/test_calculate.py::test_nan_and_inf_are_rejected[nan+1] - Failed...
+FAILED tests/test_calculate.py::test_nan_and_inf_are_rejected[inf-1] - Failed...
+FAILED tests/test_calculate.py::test_nan_and_inf_are_rejected[1*infinity] - F...
+FAILED tests/test_calculate.py::test_nan_and_inf_are_rejected[2+nan] - Failed...
+FAILED tests/test_operators.py::test_subtract[10-3-7] - assert -7 == 7
+FAILED tests/test_operators.py::test_subtract[3-10--7] - assert 7 == -7
+FAILED tests/test_operators.py::test_subtract[0-4--4] - assert 4 == -4
+FAILED tests/test_operators.py::test_multiply[3-4-12] - assert 81 == 12
+FAILED tests/test_operators.py::test_multiply[2-0-0] - assert 1 == 0
+FAILED tests/test_operators.py::test_multiply[-2-5--10] - assert -32 == -10
+FAILED tests/test_operators.py::test_multiply[2.5-2-5.0] - assert 6.25 == 5.0
+FAILED tests/test_operators.py::test_divide[7-2-3.5] - assert 3 == 3.5
+FAILED tests/test_operators.py::test_divide[-7-2--3.5] - assert -4 == -3.5
+FAILED tests/test_operators.py::test_divide[1-4-0.25] - assert 0 == 0.25
+FAILED tests/test_routes.py::test_post_valid_expression[10-4-6] - assert -6.0...
+FAILED tests/test_routes.py::test_post_valid_expression[6*7-42] - assert 2799...
+FAILED tests/test_routes.py::test_post_valid_expression[7/2-3.5] - assert 3.0...
+FAILED tests/test_routes.py::test_post_negative_operand - AssertionError: Err...
+FAILED tests/test_routes.py::test_digit_button_label_matches_value[2] - Asser...
+FAILED tests/test_routes.py::test_digit_button_label_matches_value[8] - Asser...
+FAILED tests/test_routes.py::test_operator_buttons_have_visible_label[*] - As...
+FAILED tests/test_routes.py::test_operator_buttons_have_visible_label[/] - As...
+33 failed, 51 passed in 0.12s

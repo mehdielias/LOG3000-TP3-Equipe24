@@ -41,7 +41,7 @@ def multiply(a, b):
     Returns:
         Le produit attendu ``a * b``.
     """
-    return a ** b
+    return a * b
 
 
 def divide(a, b):

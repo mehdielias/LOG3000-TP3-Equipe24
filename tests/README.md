@@ -44,7 +44,7 @@ Les résultats attendus sont ceux d'une calculatrice arithmétique classique :
 
 ## État actuel
 
-Le code fourni contient des bogues : de nombreux tests **échouent
-volontairement** tant que les corrections ne sont pas fusionnées. Les résultats
-avant correction sont conservés dans
-[`../docs/baseline_test_results.txt`](../docs/baseline_test_results.txt).
+Les 84 tests passent. La suite a d'abord révélé 33 échecs sur le code fourni
+([`../docs/baseline_test_results.txt`](../docs/baseline_test_results.txt)) ;
+le résultat après correction est dans
+[`../docs/final_test_results.txt`](../docs/final_test_results.txt).

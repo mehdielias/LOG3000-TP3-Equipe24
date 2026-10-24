@@ -9,7 +9,7 @@ Calculatrice web simple construite avec Python et Flask.
 | Membre | GitHub |
 |--------|--------|
 | Mehdi Nouadir | [@mehdielias](https://github.com/mehdielias) |
-| _À compléter_ | _À compléter_ |
+| Thomas Thiboteau | [@Xanto14](https://github.com/Xanto14) |
 
 ## But et portée du projet
 
@@ -22,7 +22,8 @@ l'expression et renvoie la page avec le résultat.
 - une seule opération par calcul, de la forme `nombre opérateur nombre`
   (ex. `12+5`, `7/2`) ;
 - opérateurs : addition `+`, soustraction `-`, multiplication `*`, division `/` ;
-- nombres décimaux acceptés (`1.5*2`) ;
+- nombres décimaux (`1.5*2`) et négatifs (`-5+3`, `5*-3`) acceptés ; `nan`
+  et `inf` sont refusés ;
 - les erreurs (expression invalide, division par zéro…) sont affichées à
   l'écran sous la forme `Error: <message>`.
 
@@ -126,9 +127,9 @@ python -m pytest tests/test_operators.py   # un seul fichier
 
 Voir [tests/README.md](tests/README.md) pour ce que couvre chaque fichier.
 
-> **État actuel :** la base de code fournie contient des bogues connus ;
-> une partie des tests échoue volontairement tant qu'ils ne sont pas corrigés
-> (voir [docs/](docs/README.md) pour les résultats avant correction).
+> **État actuel :** les 84 tests passent. Les sept bogues découverts par la suite
+> ont été corrigés (issues #1 à #7, PR #8 à #14). Voir [docs/](docs/README.md)
+> pour les résultats avant et après correction.
 
 ## Flux de contribution
 

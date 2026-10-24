@@ -5,6 +5,8 @@ l'expression saisie (ex. ``"12+5"``) en POST ; le serveur l'évalue et
 renvoie la même page avec le résultat (ou un message d'erreur) dans l'écran.
 """
 
+import math
+
 from flask import Flask, request, render_template
 from operators import add, subtract, multiply, divide
 
@@ -34,7 +36,7 @@ def calculate(expr: str):
     Raises:
         ValueError: Si l'expression est vide ou n'est pas une chaîne, contient
             plus d'un opérateur, n'a pas la forme ``a op b`` ou si un opérande
-            n'est pas un nombre.
+            n'est pas un nombre fini (``nan`` et ``inf`` sont refusés).
         ZeroDivisionError: Si une division par zéro est demandée.
     """
     if not expr or not isinstance(expr, str):
@@ -65,6 +67,9 @@ def calculate(expr: str):
         a = float(left)
         b = float(right)
     except ValueError:
+        raise ValueError("operands must be numbers")
+
+    if not (math.isfinite(a) and math.isfinite(b)):
         raise ValueError("operands must be numbers")
 
     return OPS[op_char](a, b)
